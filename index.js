@@ -68,7 +68,7 @@ function render() {
   // const timeText = `${date.getHours()}:${date.getMinutes()}`;
   const timeText = "".concat(date.getHours(), ":").concat(date.getMinutes()<10?"0"+date.getMinutes():date.getMinutes());
   const cnDateText = `${lunar.IMonthCn}${lunar.IDayCn} ${lunar.Animal}年`;
-
+  console.log(timeText);
   if (domDate.innerHTML != dateText) domDate.innerHTML = dateText;
   if (domTime.innerHTML != timeText) domTime.innerHTML = timeText;
   if (domCnDate.innerHTML != cnDateText) domCnDate.innerHTML = cnDateText;
