@@ -65,10 +65,8 @@ function render() {
       ? ["SUN", "MON", "TUES", "WED", "THUR", "FRI", "SAT"][date.getDay()]
       : "星期" + ["日", "一", "二", "三", "四", "五", "六"][date.getDay()]
   }`;
-  // const timeText = `${date.getHours()}:${date.getMinutes()}`;
-  const timeText = "".concat(date.getHours(), ":").concat(date.getMinutes()<10?"0"+date.getMinutes():date.getMinutes());
+  const timeText = `${date.getHours()}:${date.getMinutes()}`;
   const cnDateText = `${lunar.IMonthCn}${lunar.IDayCn} ${lunar.Animal}年`;
-  console.log(timeText);
   if (domDate.innerHTML != dateText) domDate.innerHTML = dateText;
   if (domTime.innerHTML != timeText) domTime.innerHTML = timeText;
   if (domCnDate.innerHTML != cnDateText) domCnDate.innerHTML = cnDateText;
