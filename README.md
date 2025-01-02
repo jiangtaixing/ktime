@@ -1,4 +1,5 @@
-# kindle-time
+FROM FROM [# kindle-time](https://lecepin.github.io/kindle-time/)
+https://jiangtaixing.github.io/kindle-time/
 
 Use the clock on your Kindle.
 
