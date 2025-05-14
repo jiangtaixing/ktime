@@ -26,18 +26,6 @@
     // 上海长宁区的城市编码
     const cityCode = '310105';
 
-    // 天气代码与图标映射
-    //    const weatherIcons = {
-    //        'sunny': '☀️',         // 晴天
-    //        'cloudy': '☁️',        // 多云
-    //        'overcast': '☁️',      // 阴天
-    //        'rainy': '🌧️',        // 雨
-    //        'snow': '❄️',          // 雪
-    //        'foggy': '🌫️',        // 雾
-    //        'haze': '😷',         // 霾
-    //        'windy': '🌬️',        // 风
-    //    };
-
     const weatherText = {
         'sunny': '晴',
         'cloudy': '多云',
@@ -71,11 +59,11 @@
             if (data.status === '1' && data.lives && data.lives.length > 0) {
                 const weather = data.lives[0];
                 const weatherType = mapWeatherCode(weather.weather_code || '0');
-                const icon = weatherIcons[weatherType] || '☀️';
+                const type = weatherText[weatherType] || '未知';
 
                 // 更新天气显示
                 weatherContainer.innerHTML = `
-                        ${icon} ${weather.temperature}°C ${weather.weather}
+                        ${type} ${weather.temperature}°C ${weather.weather}
                     `;
             }
         })
