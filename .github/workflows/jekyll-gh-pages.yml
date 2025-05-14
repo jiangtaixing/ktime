@@ -28,10 +28,6 @@ jobs:
       - name: 检出代码
         uses: actions/checkout@v4
 
-      - name: 替换 API 密钥
-        run: |
-          sed -i "s/__AMAP_KEY__/${{ secrets.AMAP_KEY }}/g" weather.js
-
       - name: 设置 Pages
         uses: actions/configure-pages@v5
 
