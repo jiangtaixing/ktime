@@ -27,15 +27,26 @@
     const cityCode = '310105';
 
     // 天气代码与图标映射
-    const weatherIcons = {
-        'sunny': '☀️',         // 晴天
-        'cloudy': '☁️',        // 多云
-        'overcast': '☁️',      // 阴天
-        'rainy': '🌧️',        // 雨
-        'snow': '❄️',          // 雪
-        'foggy': '🌫️',        // 雾
-        'haze': '😷',         // 霾
-        'windy': '🌬️',        // 风
+    //    const weatherIcons = {
+    //        'sunny': '☀️',         // 晴天
+    //        'cloudy': '☁️',        // 多云
+    //        'overcast': '☁️',      // 阴天
+    //        'rainy': '🌧️',        // 雨
+    //        'snow': '❄️',          // 雪
+    //        'foggy': '🌫️',        // 雾
+    //        'haze': '😷',         // 霾
+    //        'windy': '🌬️',        // 风
+    //    };
+
+    const weatherText = {
+        'sunny': '晴',
+        'cloudy': '多云',
+        'overcast': '阴',
+        'rainy': '雨',
+        'snow': '雪',
+        'foggy': '雾',
+        'haze': '霾',
+        'windy': '风'
     };
 
     // 将高德天气代码转换为简单的天气类型
@@ -57,21 +68,21 @@
         fetch(`https://restapi.amap.com/v3/weather/weatherInfo?key=${aMapKey}&city=${cityCode}&extensions=base`)
             .then(response => response.json())
             .then(data => {
-                if (data.status === '1' && data.lives && data.lives.length > 0) {
-                    const weather = data.lives[0];
-                    const weatherType = mapWeatherCode(weather.weather_code || '0');
-                    const icon = weatherIcons[weatherType] || '☀️';
+            if (data.status === '1' && data.lives && data.lives.length > 0) {
+                const weather = data.lives[0];
+                const weatherType = mapWeatherCode(weather.weather_code || '0');
+                const icon = weatherIcons[weatherType] || '☀️';
 
-                    // 更新天气显示
-                    weatherContainer.innerHTML = `
+                // 更新天气显示
+                weatherContainer.innerHTML = `
                         ${icon} ${weather.temperature}°C ${weather.weather}
                     `;
-                }
-            })
+            }
+        })
             .catch(error => {
-                console.error('获取天气信息失败:', error);
-                weatherContainer.innerHTML = '天气信息加载失败';
-            });
+            console.error('获取天气信息失败:', error);
+            weatherContainer.innerHTML = '天气信息加载失败';
+        });
     }
 
     // 立即获取一次天气
