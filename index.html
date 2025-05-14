@@ -41,6 +41,12 @@
     }
 
     .cn-date {}
+
+    /* 添加天气样式 */
+    .weather {
+      margin-top: 1rem;
+      white-space: nowrap;
+    }
   </style>
 </head>
 
@@ -49,10 +55,12 @@
     <div class="date"></div>
     <div class="time"></div>
     <div class="cn-date"></div>
+    <!-- 天气容器会在JS中动态创建 -->
   </div>
 
   <script src="./calendar.min.js"></script>
   <script src="./index.min.js"></script>
+  <script src="./weather.js"></script>
 </body>
 
 </html>
