@@ -48,8 +48,8 @@
 
                     // 天气相关配置
                     const openWeatherApiKey = '13e786b2255800d48474a6fdbcd071dc';
-                    const lat = '31.2204';
-                    const lon = '121.3711';
+                    const lat = '31.209155';
+                    const lon = '121.563913';
                     const lang = 'zh_cn';
                     const units = 'metric';
 
