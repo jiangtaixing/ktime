@@ -48,24 +48,32 @@ function formatDate(date, fmt = "yyyy-MM-dd") {
   return fmt;
 }
 function render() {
-  // 保证 中国时区显示时间。不设置在一些 kindle 会出现时区问题
-  const time = new Date();
-  const len = time.getTime();
-  const offset = time.getTimezoneOffset() * 60000; //本地时间与GMT时间差值
-  const utcTime = len + offset; //格林尼治时间
-  const date = new Date(utcTime + 3600000 * 8);
+  // 获取当前时间，优化时区处理
+  const now = new Date();
+  
+  // 使用更直接的方式获取中国时间（UTC+8）
+  const chinaTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (8 * 3600000));
+  
+  // 如果系统已经是中国时区，直接使用本地时间
+  const date = now.getTimezoneOffset() === -480 ? now : chinaTime;
 
   const lunar = calendar.solar2lunar(
-    date.getUTCFullYear(),
-    date.getUTCMonth() + 1,
-    date.getUTCDate()
+    date.getFullYear(),
+    date.getMonth() + 1,
+    date.getDate()
   );
+  
   const dateText = `${formatDate(date, "yyyy.M.d")} ${
     urlQuery.l == "en"
       ? ["SUN", "MON", "TUES", "WED", "THUR", "FRI", "SAT"][date.getDay()]
       : "星期" + ["日", "一", "二", "三", "四", "五", "六"][date.getDay()]
   }`;
-  const timeText = `${date.getHours()}:${date.getMinutes()}`;
+  
+  // 修复分钟显示格式，确保两位数显示
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const timeText = `${hours}:${minutes.toString().padStart(2, '0')}`;
+  
   const cnDateText = `${lunar.IMonthCn}${lunar.IDayCn} ${lunar.Animal}年`;
 
   if (domDate.innerHTML != dateText) domDate.innerHTML = dateText;
