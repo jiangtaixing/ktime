@@ -1,7 +1,7 @@
-const domApp = document.querySelector(".app");
-const domTime = document.querySelector(".time");
-const domDate = document.querySelector(".date");
-const domCnDate = document.querySelector(".cn-date");
+var domApp = document.querySelector(".app");
+var domTime = document.querySelector(".time");
+var domDate = document.querySelector(".date");
+var domCnDate = document.querySelector(".cn-date");
 
 function geturl(url) {
   const arr = url.split("?");
@@ -49,40 +49,40 @@ function formatDate(date, fmt = "yyyy-MM-dd") {
 }
 function render() {
   // 获取当前时间，优化时区处理
-  const now = new Date();
+  var now = new Date();
   
   // 使用更直接的方式获取中国时间（UTC+8）
-  const chinaTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (8 * 3600000));
+  var chinaTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (8 * 3600000));
   
   // 如果系统已经是中国时区，直接使用本地时间
-  const date = now.getTimezoneOffset() === -480 ? now : chinaTime;
+  var date = now.getTimezoneOffset() === -480 ? now : chinaTime;
 
-  const lunar = calendar.solar2lunar(
+  var lunar = calendar.solar2lunar(
     date.getFullYear(),
     date.getMonth() + 1,
     date.getDate()
   );
   
-  const dateText = `${formatDate(date, "yyyy.M.d")} ${
+  var dateText = formatDate(date, "yyyy.M.d") + " " + (
     urlQuery.l == "en"
       ? ["SUN", "MON", "TUES", "WED", "THUR", "FRI", "SAT"][date.getDay()]
       : "星期" + ["日", "一", "二", "三", "四", "五", "六"][date.getDay()]
-  }`;
+  );
   
-  // 修复分钟显示格式，确保两位数显示
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-  const timeText = `${hours}:${minutes.toString().padStart(2, '0')}`;
+  // 修复分钟显示格式，确保两位数显示（兼容老版本浏览器）
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+  var timeText = hours + ":" + (minutes < 10 ? '0' + minutes : minutes);
   
-  const cnDateText = `${lunar.IMonthCn}${lunar.IDayCn} ${lunar.Animal}年`;
+  var cnDateText = lunar.IMonthCn + lunar.IDayCn + " " + lunar.Animal + "年";
 
   if (domDate.innerHTML != dateText) domDate.innerHTML = dateText;
   if (domTime.innerHTML != timeText) domTime.innerHTML = timeText;
   if (domCnDate.innerHTML != cnDateText) domCnDate.innerHTML = cnDateText;
 }
 
-const urlQuery = geturl(location.href);
-const config = {
+var urlQuery = geturl(location.href);
+var config = {
   fontSize: +(urlQuery.fs || 7),
   rotate: urlQuery.r,
   lang: urlQuery.l,
@@ -91,11 +91,9 @@ const config = {
 domTime.style.fontSize = config.fontSize + "rem";
 domDate.style.fontSize = config.fontSize / 2.5 + "rem";
 domCnDate.style.fontSize = config.fontSize / 4 + "rem";
-domApp.style.cssText = `-webkit-transform: rotate(${
-  config.rotate || 0
-}deg) translate3d(-50%,-50%,0)`;
+domApp.style.cssText = "-webkit-transform: rotate(" + (config.rotate || 0) + "deg) translate3d(-50%,-50%,0)";
 
 render();
-setInterval(() => {
+setInterval(function() {
   render();
 }, 1000);
