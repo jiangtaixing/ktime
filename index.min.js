@@ -53,8 +53,9 @@ function formatDate(date, fmt) {
 function render() {
   try {
     // Kindle浏览器的new Date()返回UTC时间，需要转换为中国时间（UTC+8）
+    // 根据观察到的固定3分钟延迟，添加精确补偿
     var utcDate = new Date();
-    var date = new Date(utcDate.getTime() + (8 * 60 * 60 * 1000)); // 加8小时
+    var date = new Date(utcDate.getTime() + (8 * 60 * 60 * 1000) + (3 * 60 * 1000)); // 加8小时3分钟
 
     var lunar = calendar.solar2lunar(
       date.getFullYear(),
@@ -102,7 +103,7 @@ domCnDate.style.fontSize = config.fontSize / 4 + "rem";
 domApp.style.cssText = "-webkit-transform: rotate(" + (config.rotate || 0) + "deg) translate3d(-50%,-50%,0)";
 
 // 添加版本信息用于调试缓存问题
-console.log("Kindle Time Script v2.2 - UTC+8 Fix - " + new Date().toISOString());
+console.log("Kindle Time Script v2.6 - Precise 3min Compensation - " + new Date().toISOString());
 
 render();
 setInterval(function() {
