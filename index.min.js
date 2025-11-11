@@ -52,10 +52,8 @@ function formatDate(date, fmt) {
 }
 function render() {
   try {
-    // 获取当前UTC时间，然后转换为中国时间（UTC+8）
-    var now = new Date();
-    var utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
-    var date = new Date(utcTime + (8 * 3600000)); // UTC+8 中国时间
+    // 直接使用设备的本地时间（Kindle设备时间已经是正确的）
+    var date = new Date();
 
     var lunar = calendar.solar2lunar(
       date.getFullYear(),
@@ -103,7 +101,7 @@ domCnDate.style.fontSize = config.fontSize / 4 + "rem";
 domApp.style.cssText = "-webkit-transform: rotate(" + (config.rotate || 0) + "deg) translate3d(-50%,-50%,0)";
 
 // 添加版本信息用于调试缓存问题
-console.log("Kindle Time Script v2.0 - " + new Date().toISOString());
+console.log("Kindle Time Script v2.1 - " + new Date().toISOString());
 
 render();
 setInterval(function() {
