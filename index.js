@@ -48,14 +48,8 @@ function formatDate(date, fmt = "yyyy-MM-dd") {
   return fmt;
 }
 function render() {
-  // 获取当前时间，优化时区处理
-  var now = new Date();
-  
-  // 使用更直接的方式获取中国时间（UTC+8）
-  var chinaTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (8 * 3600000));
-  
-  // 如果系统已经是中国时区，直接使用本地时间
-  var date = now.getTimezoneOffset() === -480 ? now : chinaTime;
+  // 直接获取当前本地时间，不进行复杂的时区转换
+  var date = new Date();
 
   var lunar = calendar.solar2lunar(
     date.getFullYear(),
