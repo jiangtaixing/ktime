@@ -52,8 +52,10 @@ function formatDate(date, fmt) {
 }
 function render() {
   try {
-    // 直接获取当前本地时间，不进行复杂的时区转换
-    var date = new Date();
+    // 获取当前UTC时间，然后转换为中国时间（UTC+8）
+    var now = new Date();
+    var utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
+    var date = new Date(utcTime + (8 * 3600000)); // UTC+8 中国时间
 
     var lunar = calendar.solar2lunar(
       date.getFullYear(),
