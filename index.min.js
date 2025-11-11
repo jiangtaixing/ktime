@@ -102,6 +102,9 @@ domDate.style.fontSize = config.fontSize / 2.5 + "rem";
 domCnDate.style.fontSize = config.fontSize / 4 + "rem";
 domApp.style.cssText = "-webkit-transform: rotate(" + (config.rotate || 0) + "deg) translate3d(-50%,-50%,0)";
 
+// 添加版本信息用于调试缓存问题
+console.log("Kindle Time Script v2.0 - " + new Date().toISOString());
+
 render();
 setInterval(function() {
   render();
