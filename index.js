@@ -2,6 +2,7 @@ var domApp = document.querySelector(".app");
 var domTime = document.querySelector(".time");
 var domDate = document.querySelector(".date");
 var domCnDate = document.querySelector(".cn-date");
+var domStandAlert = document.querySelector(".stand-alert");
 
 function geturl(url) {
   var arr = url.split("?");
@@ -76,9 +77,15 @@ function render() {
     
     var cnDateText = lunar.IMonthCn + lunar.IDayCn + " " + lunar.Animal + "年";
 
+    var standAlertText = "";
+    if (hours % 2 !== 0) {
+      standAlertText = "现在是站立时间";
+    }
+
     if (domDate && domDate.innerHTML != dateText) domDate.innerHTML = dateText;
     if (domTime && domTime.innerHTML != timeText) domTime.innerHTML = timeText;
     if (domCnDate && domCnDate.innerHTML != cnDateText) domCnDate.innerHTML = cnDateText;
+    if (domStandAlert && domStandAlert.innerHTML != standAlertText) domStandAlert.innerHTML = standAlertText;
   } catch (e) {
     // 如果出现错误，至少显示基本时间
     if (domTime) {
@@ -100,6 +107,7 @@ var config = {
 domTime.style.fontSize = config.fontSize + "rem";
 domDate.style.fontSize = config.fontSize / 2.5 + "rem";
 domCnDate.style.fontSize = config.fontSize / 4 + "rem";
+if (domStandAlert) domStandAlert.style.fontSize = config.fontSize / 4 + "rem";
 domApp.style.cssText = "-webkit-transform: rotate(" + (config.rotate || 0) + "deg) translate3d(-50%,-50%,0)";
 
 // 添加版本信息用于调试缓存问题
