@@ -54,9 +54,9 @@ function formatDate(date, fmt) {
 function render() {
   try {
     // Kindle浏览器的new Date()返回UTC时间，需要转换为中国时间（UTC+8）
-    // 根据观察到的固定3分钟延迟，添加精确补偿
-    var utcDate = new Date();
-    var date = new Date(utcDate.getTime() + (8 * 60 * 60 * 1000) + (3 * 60 * 1000)); // 加8小时3分钟
+    // 如果您的设备时间不准确，请检查设备设置，或在此处恢复补偿逻辑
+    var date = new Date(); 
+    // var date = new Date(utcDate.getTime() + (8 * 60 * 60 * 1000) + (3 * 60 * 1000)); // 旧逻辑：加8小时3分钟
 
     var lunar = calendar.solar2lunar(
       date.getFullYear(),
