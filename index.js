@@ -53,11 +53,21 @@ function formatDate(date, fmt) {
 }
 function render() {
   try {
-    // Kindle浏览器的new Date()返回UTC时间，需要转换为中国时间（UTC+8）
-    // 如果您的设备时间不准确，请检查设备设置，或在此处恢复补偿逻辑
-    var date = new Date(); 
-    // var date = new Date(utcDate.getTime() + (8 * 60 * 60 * 1000) + (3 * 60 * 1000)); // 旧逻辑：加8小时3分钟
-
+    // Kindle浏览器的new Date()通常返回UTC时间，而电脑浏览器返回本地时间（如UTC+8）
+    // 智能判断：如果时区偏移量为0（UTC），则手动加8小时；否则信任系统时间
+    var now = new Date();
+    var offset = now.getTimezoneOffset(); // 分钟，UTC为0，UTC+8为-480
+    
+    var date;
+    if (offset === 0) {
+       // Kindle环境：认为是UTC，需要加8小时
+       // 根据之前的经验，Kindle可能还有3分钟的额外延迟，这里一并加上
+       date = new Date(now.getTime() + (8 * 60 * 60 * 1000) + (3 * 60 * 1000));
+    } else {
+       // 电脑环境或其他已设置时区的环境：直接使用系统时间
+       date = now;
+    }
+    
     var lunar = calendar.solar2lunar(
       date.getFullYear(),
       date.getMonth() + 1,
@@ -111,7 +121,7 @@ if (domStandAlert) domStandAlert.style.fontSize = config.fontSize / 4 + "rem";
 domApp.style.cssText = "-webkit-transform: rotate(" + (config.rotate || 0) + "deg) translate3d(-50%,-50%,0)";
 
 // 添加版本信息用于调试缓存问题
-console.log("Kindle Time Script v2.8 - Precise 3min Compensation - " + new Date().toISOString());
+console.log("Kindle Time Script v2.9 - Smart Timezone Compensation - " + new Date().toISOString());
 
 render();
 setInterval(function() {
