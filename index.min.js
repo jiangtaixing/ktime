@@ -61,8 +61,7 @@ function render() {
     var date;
     if (offset === 0) {
        // Kindle环境：认为是UTC，需要加8小时
-       // 根据之前的经验，Kindle可能还有3分钟的额外延迟，这里一并加上
-       date = new Date(now.getTime() + (8 * 60 * 60 * 1000) + (3 * 60 * 1000));
+       date = new Date(now.getTime() + (8 * 60 * 60 * 1000));
     } else {
        // 电脑环境或其他已设置时区的环境：直接使用系统时间
        date = now;
@@ -121,7 +120,7 @@ if (domStandAlert) domStandAlert.style.fontSize = config.fontSize / 4 + "rem";
 domApp.style.cssText = "-webkit-transform: rotate(" + (config.rotate || 0) + "deg) translate3d(-50%,-50%,0)";
 
 // 添加版本信息用于调试缓存问题
-console.log("Kindle Time Script v2.9 - Smart Timezone Compensation - " + new Date().toISOString());
+console.log("Kindle Time Script v2.10 - Removed 3min Compensation - " + new Date().toISOString());
 
 render();
 setInterval(function() {
