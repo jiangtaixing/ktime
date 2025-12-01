@@ -111,7 +111,7 @@ if (domStandAlert) domStandAlert.style.fontSize = config.fontSize / 4 + "rem";
 domApp.style.cssText = "-webkit-transform: rotate(" + (config.rotate || 0) + "deg) translate3d(-50%,-50%,0)";
 
 // 添加版本信息用于调试缓存问题
-console.log("Kindle Time Script v2.6 - Precise 3min Compensation - " + new Date().toISOString());
+console.log("Kindle Time Script v2.8 - Precise 3min Compensation - " + new Date().toISOString());
 
 render();
 setInterval(function() {
