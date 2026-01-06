@@ -1,0 +1,99 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Build and Deploy
+        env:
+          AMAP_KEY: ${{ secrets.AMAP_KEY }}
+          AMAP_SECURITY_CODE: ${{ secrets.AMAP_SECURITY_CODE }}
+        run: |
+          # Check secrets
+          if [ -z "$AMAP_KEY" ]; then
+            echo "::error::AMAP_KEY secret is not set!"
+            exit 1
+          fi
+          echo "AMAP_KEY found (length: ${#AMAP_KEY})"
+          
+          # Switch to gh-pages branch
+          if git show-ref --verify --quiet refs/heads/gh-pages; then
+            git checkout gh-pages
+            find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
+          else
+            git checkout --orphan gh-pages
+          fi
+          
+          # Copy all files from main
+          git checkout main -- .
+          
+          # Replace placeholders
+          echo "Replacing placeholders..."
+          sed "s|__AMAP_KEY__|$AMAP_KEY|g" bus.js > bus.js.tmp && mv bus.js.tmp bus.js
+          sed "s|__AMAP_SECURITY_CODE__|$AMAP_SECURITY_CODE|g" bus.js > bus.js.tmp && mv bus.js.tmp bus.js
+          
+          # Verify
+          if grep -q "__AMAP_KEY__" bus.js; then
+            echo "::error::Replacement failed!"
+            head -15 bus.js
+            exit 1
+          fi
+          echo "✓ Replacement successful"
+          
+          # Clean and stage
+          rm -f bus.js.tmp bus.js.replaced 2>/dev/null || true
+          git add -A
+          
+          # Verify staged
+          STAGED=$(git show :bus.js 2>/dev/null)
+          if echo "$STAGED" | grep -q "__AMAP_KEY__"; then
+            echo "::error::Staged has placeholder!"
+            exit 1
+          fi
+          echo "✓ Staged verified"
+          
+          # Commit
+          git commit -m "Deploy: Update with API keys [skip ci]" || echo "No changes"
+          
+          # Verify committed
+          COMMITTED=$(git show HEAD:bus.js 2>/dev/null)
+          if echo "$COMMITTED" | grep -q "__AMAP_KEY__"; then
+            echo "::error::Committed has placeholder!"
+            exit 1
+          fi
+          echo "✓ Committed verified"
+          
+          # Push
+          git push origin gh-pages --force
+          
+          # Wait a moment for GitHub to process
+          sleep 2
+          
+          # Verify on remote
+          echo "Verifying remote file..."
+          git fetch origin gh-pages
+          REMOTE=$(git show origin/gh-pages:bus.js 2>/dev/null)
+          if echo "$REMOTE" | grep -q "__AMAP_KEY__"; then
+            echo "::error::Remote file has placeholder!"
+            echo "Remote file preview:"
+            echo "$REMOTE" | head -15
+            exit 1
+          fi
+          echo "✓ Remote file verified - deployment successful!"

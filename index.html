@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clock For Kindle</title>
+  <style>
+    @font-face {
+      font-family: TIME;
+      src: url("time.ttf") format("truetype");
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      height: 100vh;
+      width: 100%;
+      text-align: center;      
+      overflow: hidden;
+    }
+
+    .app {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -webkit-transform-origin: 0 0;
+    }
+
+    .time {
+      font-family: TIME;
+      margin: 1rem 0;
+    }
+
+    .date {
+      white-space: nowrap;
+    }
+
+    .cn-date {}
+
+    .stand-alert {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+
+    /* Bus Info Styles */
+    #bus-container {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      border-top: 1px solid #ccc;
+      padding-top: 1rem;
+    }
+    .bus-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .bus-route {
+      background: #f9f9f9;
+      padding: 0.5rem;
+      border-radius: 4px;
+    }
+    .bus-route h3 {
+      font-size: 1rem;
+      margin-bottom: 0.3rem;
+    }
+    .highlight {
+      font-weight: bold;
+      color: #333;
+    }
+    .sub-text {
+      font-size: 0.8rem;
+      color: #666;
+    }
+    .loading, .error {
+      font-size: 0.9rem;
+      color: #666;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <div class="date"></div>
+    <div class="time"></div>
+    <div class="cn-date"></div>
+    <div class="stand-alert"></div>
+    <p>Per aspera ad astra.</p>
+    <div id="bus-container"></div>
+  </div>
+
+  <script src="https://webapi.amap.com/loader.js"></script>
+  <script src="./calendar.min.js"></script>
+  <script src="./index.min.js?v=2.10"></script>
+  <script src="./bus.js?v=2.7"></script>
+</body>
+
+</html>
